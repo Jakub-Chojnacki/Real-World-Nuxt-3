@@ -2,8 +2,24 @@
 import { useParam } from '~/composables/useParam';
 import { getCategoryDetailsUrl, type CategoryDetails } from '~/data/categories';
 
+definePageMeta({
+    layout: 'breadcrumb'
+})
+
 const categorySlug = useParam('category');
 const { data: category } = await useFetch<CategoryDetails>(getCategoryDetailsUrl(categorySlug));
+
+const categoryState = useState('category', () => ({
+    name: "",
+    slug: ""
+}))
+
+if (category.value) {
+    categoryState.value = {
+        name: category.value.name,
+        slug: category.value.slug
+    }
+}
 </script>
 
 <template>
